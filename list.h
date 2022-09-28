@@ -1,8 +1,8 @@
 // =================================================================
 //
 // File: list.h
-// Author:
-// Date:
+// Author: Alan Patricio González Bernal
+// Date: 26/09/2022
 // 
 // =================================================================
 #ifndef LIST_H
@@ -223,10 +223,32 @@ T List<T>::last() const {
 // =================================================================
 template <class T>
 T List<T>::get(uint index) const {
+	Node<T> *p, *q;
 	T aux;
 
+	if(index >= size){
+
+		throw IndexOutOfBounds();
+	}
+
 	// TO DO
+
+	p = head;
+	int i = 0;
+
+	while( p != NULL){
+
+		if(i == index){
+
+			aux = p->value;
+			break;
+		}
+
+		i++;
+		p = p->next;
+	}
 	return aux;
+
 }
 
 // =================================================================
@@ -275,9 +297,50 @@ void List<T>::push_back(T val) {
 // =================================================================
 template <class T>
 void List<T>::insert_at(T val, uint index) {
+	Node<T> *p, *q, *a;
+	int b = 0;
 	// TO DO
-}
 
+	a = new Node<T>(0);
+
+	if(index > size){
+
+		throw IndexOutOfBounds();
+
+	}
+	p = head;
+
+	if (empty() || index == 0) {
+		push_front(val);
+		return;
+	}
+
+	if (index == size) {
+		push_back(val);
+		return;
+	}
+
+	if(0 <= index <= size){
+		
+		while(p->next != NULL){
+
+			if(b == index-1){
+
+					a = p;
+			}
+
+			b++;
+			p = p->next;
+
+		}
+
+	}
+	p = head;
+	q = new Node<T>(val);
+	q->next = a->next;
+	a->next = q;
+	size++;
+}
 // =================================================================
 // Delete the item at the beginning of the list.
 //
@@ -346,8 +409,54 @@ T List<T>::pop_back() {
 // =================================================================
 template <class T>
 T List<T>::remove_at(uint index) {
+	Node<T> *p, *q;
 	T aux;
-	// TO DO
+
+	if (empty() || index == 0) {
+
+		return pop_front();
+
+	}
+
+	if (index == size-1) {
+
+		return pop_back();
+
+	}
+
+	if(index >= size || index < 0){
+
+		throw IndexOutOfBounds();
+
+	}
+
+	p = head;
+	int a = 0;
+
+	if( 0 <= index < size){
+
+		while(p != NULL){
+
+			if(a == index-1){
+
+				q = p;
+				p = q->next;
+				break;
+
+			}
+
+			a ++;
+			p = p->next;
+
+		}
+
+	q->next = p->next;
+	aux = p->value;
+
+	}
+	delete p;
+	size--;
+	
 	return aux;
 }
 
@@ -359,8 +468,47 @@ T List<T>::remove_at(uint index) {
 // =================================================================
 template <class T>
 long int List<T>::indexOf(T val) const {
+	Node<T> *p;
+
 	// TO DO
-	return -1;
+
+	int k = 0;
+	p = head;
+	while(p->next != NULL || val == p->value){
+
+		if(p->value == val){
+
+			return k;
+		}
+
+		p = p->next;
+		k++;
+
+	}
+
+	if(k>=size){
+
+		throw IndexOutOfBounds();
+
+	}
+
+		return -1;
+	
 }
 
 #endif /* LIST_H */
+
+
+//if(val != index){
+//	while(index != val){
+//		
+//		p->next;
+//
+//	}
+//	return p;
+//	}
+//	else{
+//
+//		return -1;
+//
+//	}
